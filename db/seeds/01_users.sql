@@ -1,5 +1,5 @@
-INSERT INTO users (first_name, last_name, username, email) VALUES (Mustafa, Hahn, Adrianna8, Ryan_Boyer@gmail.com);
-INSERT INTO users (first_name, last_name, username, email) VALUES (Katelyn, Littel, Dina_Powlowski, Brandon_Johns@hotmail.com);
-INSERT INTO users (first_name, last_name, username, email) VALUES (Royal, Casper, Naomi_Dach99, Soledad90@yahoo.com);
-INSERT INTO users (first_name, last_name, username, email) VALUES (Astrid, Hoppe, Ezekiel.Gerhold25, Kariane9@yahoo.com);
-INSERT INTO users (first_name, last_name, username, email) VALUES (Nona, Zboncak, Ignacio1, Antwon_Glover@gmail.com);
+INSERT INTO users (first_name, last_name, username, email) VALUES ('Enola', 'Donnelly', 'Loyal_Russel77', 'Filiberto_Willms@hotmail.com');
+INSERT INTO users (first_name, last_name, username, email) VALUES ('Jay', 'Rippin', 'Dock76', 'Germaine_Boyle@hotmail.com');
+INSERT INTO users (first_name, last_name, username, email) VALUES ('Alphonso', 'Okuneva', 'Dorian.Marvin82', 'Fleta_Mayer19@yahoo.com');
+INSERT INTO users (first_name, last_name, username, email) VALUES ('Claire', 'Bernhard', 'Jackson_Crist97', 'Chad71@hotmail.com');
+INSERT INTO users (first_name, last_name, username, email) VALUES ('Cordia', 'Harris', 'Tatum.Labadie73', 'Friedrich.Ratke@hotmail.com');
