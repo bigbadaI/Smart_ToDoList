@@ -16,7 +16,7 @@ const generateUsers = () => {
     let username = faker.internet.userName();
     let email = faker.internet.email();
 
-    users += `INSERT INTO ${NAME} ${ATTRIBUTES} VALUES (${firstName}, ${lastName}, ${username}, ${email});`;
+    users += `INSERT INTO ${NAME} ${ATTRIBUTES} VALUES ("${firstName}", "${lastName}", "${username}", "${email}");`;
     users += "\n";
   }
 
