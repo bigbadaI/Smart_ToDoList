@@ -1,0 +1,66 @@
+<!-- HTML TO SEE EFFECTS OF GOOGLE API QUERY -->
+<!-- open in browser from file -- not a route -->
+<!-- TO BE REMOVED ONCE ROUTE AND JS ARE DONE -->
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+</head>
+<body>
+
+
+  <form action="" id="new-task-form">
+    <textarea name="new-task" id="new-task" cols="30" rows="10" placeholder="New task / Google query"></textarea>
+    <textarea name="api-key" id="api-key" cols="30" rows="10" placeholder="Google API Key"></textarea>
+    <button type="submit" id="btn-new-task">Submit</button>
+  </form>
+
+
+
+
+<script>
+
+  $("#new-task-form").on("submit", function() {
+
+    event.preventDefault();
+
+    const task = $("#new-task").val();
+    const apiKey = $("#api-key").val();
+
+    console.log(task);
+    console.log(apiKey);
+
+
+
+    const service_url = 'https://kgsearch.googleapis.com/v1/entities:search';
+    const params = {
+      'query': task, // can change what to query here
+      'limit': 10,
+      'indent': true,
+      'key' : apiKey // ADD GOOGLE API KEY HERE
+    };
+
+    $.getJSON(service_url + '?callback=?', params, function(response) {
+      $.each(response.itemListElement, function(i, element) {
+        $('<div>', {text:element['result']['name']}).appendTo(document.body);
+        if (element['result']['name'].toUppercase === params.query.toUppercase) {
+          console.log("MATCH!");
+          console.log(element['result']);
+          // console.log(Object.keys(element['result']));
+          element['result']['@type'].forEach(type => {
+            console.log(params.query, "is a/an:", type);
+          });
+        }
+      });
+    });
+
+
+  });
+
+
+</script>
+</body>
+</html>
