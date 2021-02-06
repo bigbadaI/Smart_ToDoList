@@ -1,0 +1,36 @@
+<!-- HTML TO SEE EFFECTS OF GOOGLE API QUERY -->
+<!-- open in browser from file -- not a route -->
+<!-- TO BE REMOVED ONCE ROUTE AND JS ARE DONE -->
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+</head>
+<body>
+<script>
+  var service_url = 'https://kgsearch.googleapis.com/v1/entities:search';
+  var params = {
+    'query': 'taylor swift', // can change what to query here
+    'limit': 10,
+    'indent': true,
+    'key' : // ADD GOOGLE API KEY HERE
+  };
+  $.getJSON(service_url + '?callback=?', params, function(response) {
+    $.each(response.itemListElement, function(i, element) {
+      $('<div>', {text:element['result']['name']}).appendTo(document.body);
+      if (element['result']['name'].toUppercase === params.query.toUppercase) {
+        console.log("MATCH!");
+        console.log(element['result']);
+        // console.log(Object.keys(element['result']));
+        element['result']['@type'].forEach(type => {
+          console.log(params.query, "is a/an:", type);
+        });
+      }
+    });
+  });
+</script>
+</body>
+</html>
