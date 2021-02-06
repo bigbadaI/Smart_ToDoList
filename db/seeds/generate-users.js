@@ -1,30 +1,26 @@
 const faker = require('faker');
 const fs = require('fs')
-console.log("HELLO")
+
 function generateUsers() {
 
-  let users = []
+  // TABLE INFO
+  const NAME = "users";
+  const ATTRIBUTES = "(first_name, last_name, username, email)";
 
-  for (let id=0; id <= 1; id++) {
+  let users = "";
+
+  for (let id=1; id <= 5; id++) {
 
     let firstName = faker.name.firstName();
     let lastName = faker.name.lastName();
-    let email = faker.internet.email();
     let username = faker.internet.userName();
+    let email = faker.internet.email();
 
-    users.push({
-        "first_name": firstName,
-        "last_name": lastName,
-        "email": email,
-        "username":username
-    });
+    users += `INSERT INTO ${NAME} ${ATTRIBUTES} VALUES (${firstName}, ${lastName}, ${username}, ${email});`;
+    users += "\n"
   }
-  console.log(users);
-  return { "data": users }
+
+  return users;
 }
 
-let dataObj = generateUsers();
-generateUsers();
-
-// fs.writeFileSync('data.json', JSON.stringify(dataObj, null, '\t'));
-
+fs.writeFileSync('users_seeds.sql', generateUsers());
