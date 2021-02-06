@@ -23,4 +23,4 @@ function generateUsers() {
   return users;
 }
 
-fs.writeFileSync('users_seeds.sql', generateUsers());
+fs.writeFileSync('users.sql', generateUsers());
