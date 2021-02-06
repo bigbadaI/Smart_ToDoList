@@ -1,7 +1,7 @@
 const faker = require('faker');
-const fs = require('fs')
+const fs = require('fs');
 
-function generateUsers() {
+const generateUsers = () => {
 
   // TABLE INFO
   const NAME = "users";
@@ -9,7 +9,7 @@ function generateUsers() {
 
   let users = "";
 
-  for (let id=1; id <= 5; id++) {
+  for (let i = 1; i <= 5; i++) {
 
     let firstName = faker.name.firstName();
     let lastName = faker.name.lastName();
@@ -17,10 +17,10 @@ function generateUsers() {
     let email = faker.internet.email();
 
     users += `INSERT INTO ${NAME} ${ATTRIBUTES} VALUES (${firstName}, ${lastName}, ${username}, ${email});`;
-    users += "\n"
+    users += "\n";
   }
 
   return users;
-}
+};
 
 fs.writeFileSync('users.sql', generateUsers());
