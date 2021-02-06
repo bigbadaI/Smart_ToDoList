@@ -23,4 +23,4 @@ const generateUsers = () => {
   return users;
 };
 
-fs.writeFileSync('users.sql', generateUsers());
+fs.writeFileSync('01_users.sql', generateUsers());
