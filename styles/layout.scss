@@ -37,4 +37,24 @@ nav h1 {
 
 }
 
+header {
+  background-color: var(--accent-dark);
+  border: .5em;
+  border-width: 5px;
+  border-color: var(--dark-shade);
+
+}
+
+main {
+  display: flex;
+  flex-direction: row;
+}
+
+.body-header {
+  flex-basis: 35%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: inherit;
+}
 
