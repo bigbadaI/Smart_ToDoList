@@ -1,9 +1,40 @@
 // See: https://sass-lang.com/
-
+:root {
+  /* palette generated using http://colormind.io/bootstrap/ */
+ --light-shade: #F3F4F4;
+ --main-color: #263381;
+ --accent-light: #45B1B5;
+ --accent-dark: #996587;
+ --dark-shade: #1C2350;
+}
 body {
-  background-color: #EEE;
+  background-color: var(--light-shade);
 
   h1 {
-    color: #244751;
+    color: var(--main-color);
   }
 }
+
+nav {
+background-color: var(--main-color);
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 1em;
+
+
+}
+nav h1 {
+  color: var(--accent-light);
+}
+
+.login a {
+  text-decoration: none;
+  color: var(--accent-dark);
+  font-family: Georgia, 'Times New Roman', Times, serif;
+
+
+}
+
+
