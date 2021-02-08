@@ -38,6 +38,26 @@ $(() => {
   };
 
 
+  /**
+   * Asynchronous AJAX POST request to send form data to the server, without reloading the page.
+   * Validate form input before submission.
+   */
+  $(function() {
+    $("#new-task-form").submit(function(event) {
+      event.preventDefault();
+
+      // validate task is not empty
+      const task = $(this).children("#new-task").val();
+      if (task.length === 0) {
+        console.log("Empty task form");
+        return;
+      }
+
+
+      console.log(task);
+    });
+  });
+
 
 });
 
