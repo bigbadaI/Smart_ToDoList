@@ -46,15 +46,15 @@ module.exports = (db) => {
 
 
     db.query(queryString, values)
-    .then(data => {
-      // Respond with a 201 (created) status on success
-      res.status(201).send();
-    })
-    .catch(err => {
-      res
-        .status(500)
-        .json({ error: err.message });
-    });
+      .then(() => {
+        // Respond with a 201 (created) status on success
+        res.status(201).send();
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
   });
 
   return router;
