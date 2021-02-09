@@ -14,7 +14,7 @@ const router = express.Router();
 
 module.exports = (db) => {
   router.get("/", (req, res) => {
-    let currentUser = req.session.username;
+    let currentUser = req.session.username || 0;
     let query = `SELECT * FROM tasks
     WHERE user_id = ${currentUser}
     AND complete = false`;
@@ -34,12 +34,12 @@ module.exports = (db) => {
 
 
   router.post("/", (req, res) => {
-    // Access from command line: curl -i -X POST localhost:8080/api/widgets
 
     if (!req.body.text) {
       res.status(400).json({ error: 'invalid request: no data in POST body' });
       return;
     }
+
     // Console message for debugging once the form submission/Ajax request is functional
     console.log("-----------------");
     console.log("POST request to add new task");
@@ -48,7 +48,7 @@ module.exports = (db) => {
     console.log("-----------------");
 
     let queryString = `INSERT INTO tasks (user_id, title, category, description, due_date) VALUES ( $1, $2, $3, $4, $5)`;
-    // TODO: CHANGE OUT WITH REQ PARAMS ONCE CLIENT SIDE FORM SUBMISSION AJAX REQUEST IS FUNCTIONAL
+
     let userID = req.session.username;
     let title = req.body.text;
     let category = 'Book';
@@ -56,49 +56,49 @@ module.exports = (db) => {
     let dueDate = '2021-02-24';
     let values = [userID, title, category, description, dueDate];
 
+    //used for our kGraph search
     let params = {
       query: title,
       limit: 1
     };
+
+    //kGraph does a google search of the title we are wanting to add to our SmartToDos
     kGraph.search(params, (err, items) => {
+      if (err) console.error(err);
+
       let test = items[0].result['@type'];
-      let types = 'Thing';
+      let types = 'To Ponder';
 
       //building an object to compare types to categories
       let compareObj = {
         'To Watch': ['Movie', 'TVSeries'],
-        'Listen To': ['Compsition', 'MusicGroup', 'BroadcastService', 'RadioSeries', 'RadioStation'],
+        'To Listen To': ['Compsition', 'MusicGroup', 'BroadcastService', 'RadioSeries', 'RadioStation'],
         'To Read': ['Book', 'ComicBook'],
-        'Places To Visit': ['Place', 'Restaurant', 'Place', 'TouristAttraction'],
-        'Would Like To Play': ['Game', 'VideoGame'],
+        'To Visit': ['Place', 'Restaurant', 'Place', 'TouristAttraction'],
+        'To Play': ['Game', 'VideoGame', "VideoGameSeries"],
+      };
 
-      }
+      //checks two arrays to see if they include any matching values
+      const findCommonElements = function(arr1, arr2) {
+        return arr1.some(item => arr2.includes(item));
+      };
 
-      const findCommonElements = function (arr1, arr2) {
-        return arr1.some(item => arr2.includes(item))
-    }
-
-      for (let category in compareObj){
-        let match = findCommonElements(compareObj[category], items[0].result['@type'] )
+      //checking against our compareObj to see if the searched item matches anything we have as a SmartToDo
+      for (let todos in compareObj) {
+        let match = findCommonElements(compareObj[todos], test);
         if (match) {
-          values[2] = category;
+          types = todos;
           break;
         }
-
       }
 
-      if (err) console.error(err);
-      // test.forEach(element => {
-      //   if (element !== 'Thing') {
-      //     types = element;
-      //   }
-      //   values[2] += types + " ";
-      // });
 
-      console.log(items[0].result['@type']);
+      console.log(test);
       console.log(items[0].result.description);
-      // values[2] = test[1];
-      // }
+      //update our category in values to our found type of SmartToDo
+      values[2] = types;
+
+      //Insert new task in the db
       (db.query(queryString, values)
         .then(() => {
           // Respond with a 201 (created) status on success
@@ -109,10 +109,12 @@ module.exports = (db) => {
             .status(500)
             .json({ error: err.message });
         }));
-
     });
-
   });
+
+
+
+  //route to change complete boeloon to true
   router.post("/:id/complete/", (req, res) => {
     let taskid = req.params.id;
     let taskQuery = `UPDATE tasks
