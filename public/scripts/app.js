@@ -13,7 +13,8 @@ $(() => {
   };
   loadOurTasks();
   const renderTasks = function(tasks) {
-    // $('#tweet-container').empty();
+    // empty the container before appending new tasks to avoid duplicates
+    $(".tasks").html("");
     for (const task of tasks) {
       console.log(task.user_id);
         // calls createTaskElement for each tweet
@@ -52,9 +53,21 @@ $(() => {
         console.log("Empty task form");
         return;
       }
+      console.log("New task to be added:", task);
+      console.log($(this).serialize());
 
-
-      console.log(task);
+      // AJAX request with form data
+      console.log("Performing ajax call...");
+      $.ajax("/api/widgets/", {
+        method: "POST",
+        data: $(this).serialize()
+      })
+        .then(function() {
+          console.log("AJAX POST request complete");
+          // clear the form
+          $(":input", "#new-task-form").val("");
+          loadOurTasks();
+        })
     });
   });
 
