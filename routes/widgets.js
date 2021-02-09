@@ -63,17 +63,41 @@ module.exports = (db) => {
     kGraph.search(params, (err, items) => {
       let test = items[0].result['@type'];
       let types = 'Thing';
-      if (err) console.error(err);
-      test.forEach(element => {
-        if (element !== 'Thing') {
-          types = element;
+
+      //building an object to compare types to categories
+      let compareObj = {
+        'To Watch': ['Movie', 'TVSeries'],
+        'Listen To': ['Compsition', 'MusicGroup', 'BroadcastService', 'RadioSeries', 'RadioStation'],
+        'To Read': ['Book', 'ComicBook'],
+        'Places To Visit': ['Place', 'Restaurant', 'Place', 'TouristAttraction'],
+        'Would Like To Play': ['Game', 'VideoGame'],
+
+      }
+
+      const findCommonElements = function (arr1, arr2) {
+        return arr1.some(item => arr2.includes(item))
+    }
+
+      for (let category in compareObj){
+        let match = findCommonElements(compareObj[category], items[0].result['@type'] )
+        if (match) {
+          values[2] = category;
+          break;
         }
-        values[2] += types + " ";
-      });
+
+      }
+
+      if (err) console.error(err);
+      // test.forEach(element => {
+      //   if (element !== 'Thing') {
+      //     types = element;
+      //   }
+      //   values[2] += types + " ";
+      // });
 
       console.log(items[0].result['@type']);
       console.log(items[0].result.description);
-      values[2] = test[1];
+      // values[2] = test[1];
       // }
       (db.query(queryString, values)
         .then(() => {
