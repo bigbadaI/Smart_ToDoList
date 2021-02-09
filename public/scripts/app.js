@@ -31,7 +31,11 @@ $(() => {
     const title = tasks.title;
     const category = tasks.category;
     const description = tasks.description;
-    const $task = $(`<div class="ourtasks">
+    const taskid = tasks.id
+    const $task = $(`<div class="ourtasks" id="testing">
+<form class="task-checkmark" method="POST" action="/widgets/${taskid}/complete">
+<button class="complete-btn" type="submit">Task Complete</button>
+</form>
 <h1>${category}</h1>
 <h3>${title}</h3>
 <p> ${description}</p>
@@ -61,6 +65,9 @@ $(() => {
     $('.header').prepend($user);
   };
   UserloggedIn();
+
+
+
 
 
   /**

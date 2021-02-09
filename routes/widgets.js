@@ -16,7 +16,8 @@ module.exports = (db) => {
   router.get("/", (req, res) => {
     let currentUser = req.session.username;
     let query = `SELECT * FROM tasks
-    WHERE user_id = ${currentUser}`;
+    WHERE user_id = ${currentUser}
+    AND complete = false`;
     console.log(query);
     db.query(query)
       .then(data => {
