@@ -61,6 +61,7 @@ app.get("/logout", (req, res) => {
 });
 
 app.get("/:id", (req, res) => {
+  // console.log("USER ID:", req.params); // DEBUGGER CODE
   req.session.username = req.params.id;
   return res.redirect("/");
 });
