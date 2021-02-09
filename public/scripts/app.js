@@ -1,7 +1,5 @@
-
-
-
 $(() => {
+
   const loadOurTasks = function() {
     $.ajax({
       method: "GET",
@@ -19,11 +17,9 @@ $(() => {
     $(".tasks").html("");
     for (const task of tasks) {
       console.log(task.user_id);
-      // calls createTaskElement for each tweet
+      // calls createTaskElement for each task
       const $task = createTaskElement(task);
       $('.tasks').prepend($task);
-
-      // takes return value and appends it to the ourtasks container
     }
   };
 
@@ -52,6 +48,7 @@ $(() => {
       renderUser(users.users);
     });
   };
+
   const renderUser = function(username) {
     let firstName = "";
     let lastName = "";
@@ -63,28 +60,22 @@ $(() => {
     const $user = $(`<h1><u>${firstName} ${lastName}</u></h1>`);
     $('.header').prepend($user);
   };
+
   UserloggedIn();
 
-
+  //load listener on entire doc, search for taskcheckmark(specified class)
+  //->elements will not be loaded when this first runs.
   $(document).on("submit", ".task-checkmark", function(event) {
     let urlId = $(this).children("input").val();
-    console.log("Here we go again", $(this).children("input").val());
     event.preventDefault();
-    console.log('it stopped');
-    console.log("Performing ajax call...");
     $.ajax(`/api/widgets/${urlId}/complete`, {
       method: "POST",
       data: $(this).serialize()
     })
       .then(function() {
-        console.log("AJAX POST request complete");
-        // clear the form
-        $(":input", "#new-task-form").val("");
         loadOurTasks();
       });
   });
-
-
 
 
   /**
@@ -102,7 +93,6 @@ $(() => {
         return;
       }
       console.log("New task to be added:", task);
-      console.log($(this).serialize());
 
       // AJAX request with form data
       console.log("Performing ajax call...");
