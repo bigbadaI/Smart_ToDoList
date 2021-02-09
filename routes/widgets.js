@@ -1,3 +1,7 @@
+
+const KGSearch = require('google-kgsearch');
+const kGraph = KGSearch(process.env.APIGOOGLEKEY);
+
 /*
  * All routes for Tasks are defined here
  * Since this file is loaded in server.js into api/tasks,
@@ -6,7 +10,7 @@
  */
 
 const express = require('express');
-const router  = express.Router();
+const router = express.Router();
 
 module.exports = (db) => {
   router.get("/", (req, res) => {
@@ -26,14 +30,15 @@ module.exports = (db) => {
       });
   });
 
+
+
   router.post("/", (req, res) => {
     // Access from command line: curl -i -X POST localhost:8080/api/widgets
 
     if (!req.body.text) {
-      res.status(400).json({ error: 'invalid request: no data in POST body'});
+      res.status(400).json({ error: 'invalid request: no data in POST body' });
       return;
     }
-
     // Console message for debugging once the form submission/Ajax request is functional
     console.log("-----------------");
     console.log("POST request to add new task");
@@ -50,18 +55,41 @@ module.exports = (db) => {
     let dueDate = '2021-02-24';
     let values = [userID, title, category, description, dueDate];
 
-
-    db.query(queryString, values)
-      .then(() => {
-        // Respond with a 201 (created) status on success
-        res.status(201).send();
-      })
-      .catch(err => {
-        res
-          .status(500)
-          .json({ error: err.message });
+    let params = {
+      query: title,
+      limit: 1
+    };
+    kGraph.search(params, (err, items) => {
+      let test = items[0].result['@type'];
+      let types = 'Thing';
+      if (err) console.error(err);
+      test.forEach(element => {
+        if (element !== 'Thing') {
+          types = element;
+        }
+        values[2] = types;
       });
+
+      console.log(items[0].result['@type']);
+      console.log(items[0].result.description);
+      values[2] = test[1];
+      // }
+      (db.query(queryString, values)
+        .then(() => {
+          // Respond with a 201 (created) status on success
+          res.status(201).send();
+        })
+        .catch(err => {
+          res
+            .status(500)
+            .json({ error: err.message });
+        }));
+
+    });
   });
+
+
+
 
   return router;
 };
