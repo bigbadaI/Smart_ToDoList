@@ -30,7 +30,6 @@ $(() => {
   const createTaskElement = function(tasks) {
     const title = tasks.title;
     const category = tasks.category;
-    const description = tasks.description;
     const taskid = tasks.id;
     const $task = $(`<div class="ourtasks">
 <form class="task-checkmark" method="POST" action="/api/widgets/${taskid}/complete">
@@ -39,7 +38,6 @@ $(() => {
 </form>
 <h1>${category}</h1>
 <h3>${title}</h3>
-<p> ${description}</p>
 </div>`);
 
     return $task;
