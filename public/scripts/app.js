@@ -2,7 +2,7 @@
 
 
 $(() => {
-  const loadOurTasks = function () {
+  const loadOurTasks = function() {
     $.ajax({
       method: "GET",
       url: "/api/widgets"
@@ -27,11 +27,16 @@ $(() => {
     }
   };
 
-  const createTaskElement = function (tasks) {
+  const createTaskElement = function(tasks) {
     const title = tasks.title;
     const category = tasks.category;
     const description = tasks.description;
+    const taskid = tasks.id;
     const $task = $(`<div class="ourtasks">
+<form class="task-checkmark" method="POST" action="/api/widgets/${taskid}/complete">
+<input type="hidden" name="taskid" value=${taskid}></input>
+<button class="complete-btn" type="submit">Task Complete</button>
+</form>
 <h1>${category}</h1>
 <h3>${title}</h3>
 <p> ${description}</p>
@@ -63,6 +68,27 @@ $(() => {
   UserloggedIn();
 
 
+  $(document).on("submit", ".task-checkmark", function(event) {
+    let urlId = $(this).children("input").val();
+    console.log("Here we go again", $(this).children("input").val());
+    event.preventDefault();
+    console.log('it stopped');
+    console.log("Performing ajax call...");
+    $.ajax(`/api/widgets/${urlId}/complete`, {
+      method: "POST",
+      data: $(this).serialize()
+    })
+      .then(function() {
+        console.log("AJAX POST request complete");
+        // clear the form
+        $(":input", "#new-task-form").val("");
+        loadOurTasks();
+      });
+  });
+
+
+
+
   /**
    * Asynchronous AJAX POST request to send form data to the server, without reloading the page.
    * Validate form input before submission.
@@ -91,11 +117,10 @@ $(() => {
           // clear the form
           $(":input", "#new-task-form").val("");
           loadOurTasks();
-        })
+        });
     });
   });
-
-
 });
+
 
 

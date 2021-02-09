@@ -16,7 +16,8 @@ module.exports = (db) => {
   router.get("/", (req, res) => {
     let currentUser = req.session.username;
     let query = `SELECT * FROM tasks
-    WHERE user_id = ${currentUser}`;
+    WHERE user_id = ${currentUser}
+    AND complete = false`;
     console.log(query);
     db.query(query)
       .then(data => {
@@ -67,7 +68,7 @@ module.exports = (db) => {
         if (element !== 'Thing') {
           types = element;
         }
-        values[2] = types;
+        values[2] += types + " ";
       });
 
       console.log(items[0].result['@type']);
@@ -86,6 +87,23 @@ module.exports = (db) => {
         }));
 
     });
+
+  });
+  router.post("/:id/complete/", (req, res) => {
+    let taskid = req.params.id;
+    let taskQuery = `UPDATE tasks
+    SET complete = true
+    WHERE id = ${taskid}`;
+    db.query(taskQuery)
+      .then(data => {
+        const widgets = data.rows;
+        res.json({ widgets });
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
   });
 
 
