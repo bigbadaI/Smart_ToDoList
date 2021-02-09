@@ -56,13 +56,16 @@ module.exports = (db) => {
     let dueDate = '2021-02-24';
     let values = [userID, title, category, description, dueDate];
 
+    //used for our kGraph search
     let params = {
       query: title,
       limit: 1
     };
+
+    //kGraph does a google search of the title we are wanting to add to our ToDos
     kGraph.search(params, (err, items) => {
       let test = items[0].result['@type'];
-      let types = 'Thing';
+      let types = 'Like to Look into';
 
       //building an object to compare types to categories
       let compareObj = {
@@ -70,35 +73,30 @@ module.exports = (db) => {
         'Listen To': ['Compsition', 'MusicGroup', 'BroadcastService', 'RadioSeries', 'RadioStation'],
         'To Read': ['Book', 'ComicBook'],
         'Places To Visit': ['Place', 'Restaurant', 'Place', 'TouristAttraction'],
-        'Would Like To Play': ['Game', 'VideoGame'],
+        'Would Like To Play': ['Game', 'VideoGame', "VideoGameSeries"],
+      };
 
-      }
+      //checks two arrays to see if they include any matching values
+      const findCommonElements = function(arr1, arr2) {
+        return arr1.some(item => arr2.includes(item));
+      };
 
-      const findCommonElements = function (arr1, arr2) {
-        return arr1.some(item => arr2.includes(item))
-    }
-
-      for (let category in compareObj){
-        let match = findCommonElements(compareObj[category], items[0].result['@type'] )
+      //checking against our compareObj to see if the searched item matches anything we have as a ToDo
+      for (let todos in compareObj) {
+        let match = findCommonElements(compareObj[todos], test);
         if (match) {
-          values[2] = category;
+          types = todos;
           break;
         }
-
       }
 
       if (err) console.error(err);
-      // test.forEach(element => {
-      //   if (element !== 'Thing') {
-      //     types = element;
-      //   }
-      //   values[2] += types + " ";
-      // });
 
-      console.log(items[0].result['@type']);
+      console.log(test);
       console.log(items[0].result.description);
-      // values[2] = test[1];
-      // }
+      //update our category in values to our found type of ToDo
+      values[2] = types;
+
       (db.query(queryString, values)
         .then(() => {
           // Respond with a 201 (created) status on success
@@ -109,10 +107,12 @@ module.exports = (db) => {
             .status(500)
             .json({ error: err.message });
         }));
-
     });
-
   });
+
+
+
+  //route to change complete boeloon to true
   router.post("/:id/complete/", (req, res) => {
     let taskid = req.params.id;
     let taskQuery = `UPDATE tasks
