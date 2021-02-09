@@ -59,20 +59,23 @@ module.exports = (db) => {
     //used for our kGraph search
     let params = {
       query: title,
-      limit: 1
+      limit: 5
     };
 
     //kGraph does a google search of the title we are wanting to add to our SmartToDos
     kGraph.search(params, (err, items) => {
       if (err) console.error(err);
 
-      let test = items[0].result['@type'];
+      console.log(items);
+      let test = [];
       let types = 'To Ponder';
+      test.push(...items[0].result['@type'], ...items[1].result['@type'], ...items[2].result['@type'], ...items[3].result['@type'], ...items[4].result['@type']);
+
 
       //building an object to compare types to categories
       let compareObj = {
         'To Watch': ['Movie', 'TVSeries'],
-        'To Listen To': ['Compsition', 'MusicGroup', 'BroadcastService', 'RadioSeries', 'RadioStation'],
+        'To Listen To': ['Compsition', 'MusicGroup', 'BroadcastService', 'RadioSeries', 'RadioStation', 'MusicAlbum'],
         'To Read': ['Book', 'ComicBook'],
         'To Visit': ['Place', 'Restaurant', 'Place', 'TouristAttraction'],
         'To Play': ['Game', 'VideoGame', "VideoGameSeries"],
