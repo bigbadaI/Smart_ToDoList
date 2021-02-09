@@ -29,16 +29,22 @@ module.exports = (db) => {
   router.post("/", (req, res) => {
     // Access from command line: curl -i -X POST localhost:8080/api/widgets
 
+    if (!req.body.text) {
+      res.status(400).json({ error: 'invalid request: no data in POST body'});
+      return;
+    }
+
     // Console message for debugging once the form submission/Ajax request is functional
     console.log("-----------------");
     console.log("POST request to add new task");
-    console.log(req.params);
+    console.log("New Task:", req.body.text);
+    console.log("User:", req.session.username);
     console.log("-----------------");
 
     let queryString = `INSERT INTO tasks (user_id, title, category, description, due_date) VALUES ( $1, $2, $3, $4, $5)`;
     // TODO: CHANGE OUT WITH REQ PARAMS ONCE CLIENT SIDE FORM SUBMISSION AJAX REQUEST IS FUNCTIONAL
-    let userID = 4;
-    let title = 'Harry Potter and the Prisoner of Azkaban';
+    let userID = req.session.username;
+    let title = req.body.text;
     let category = 'Book';
     let description = 'To Read';
     let dueDate = '2021-02-24';
