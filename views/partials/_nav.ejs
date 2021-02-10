@@ -4,7 +4,11 @@
       <h1>Smart List</h1>
     </div>
     <div class="login">
-      <a class="nav-item" href="/1">login</a>
+      <% if (user === 0) {%>
+        <a class="nav-item" href="/random">login</a>
+      <%} else {%>
+        <a class="nav-item" href="/logout">Logout</a>
+        <%}%>
     </div>
   </nav>
 
