@@ -69,16 +69,21 @@ module.exports = (db) => {
       console.log(items);
       let test = [];
       let types = 'To Ponder';
-      test.push(...items[0].result['@type'], ...items[1].result['@type'], ...items[2].result['@type'], ...items[3].result['@type'], ...items[4].result['@type']);
+      for (let i = 0; i < 4; i++) {
+        if(items[i]) {
+          test.push(...items[i].result['@type']);
+        }
+      }
+      // test.push(...items[0].result['@type'], ...items[1].result['@type'], ...items[2].result['@type'], ...items[3].result['@type'], ...items[4].result['@type']);
 
 
       //building an object to compare types to categories
       let compareObj = {
-        'To Watch': ['Movie', 'TVSeries'],
-        'To Listen To': ['Compsition', 'MusicGroup', 'BroadcastService', 'RadioSeries', 'RadioStation', 'MusicAlbum'],
-        'To Read': ['Book', 'ComicBook'],
-        'To Visit': ['Place', 'Restaurant', 'Place', 'TouristAttraction'],
-        'To Play': ['Game', 'VideoGame', "VideoGameSeries"],
+        'To Watch': ['Movie', 'TVSeries', 'SportsTeam', 'MovieSeries', 'Painting', 'TVEpisode'],
+        'To Listen To': ['Compsition', 'MusicGroup', 'BroadcastService', 'RadioSeries', 'RadioStation', 'MusicAlbum', 'MusicRelease', 'Audiobook'],
+        'To Read': ['Book', 'ComicBook', 'BookSeries', 'ComicSeries', 'Newspaper', 'NewsArticle'],
+        'To Visit': ['Place', 'Restaurant', 'TouristAttraction', 'Accommodation', 'CivicStructure', 'Landform', 'LocalBusiness', 'TouristDestination', 'LandmarksOrHistoricalBuildings'],
+        'To Play': ['Game', 'VideoGame', "VideoGameSeries"]
       };
 
       //checks two arrays to see if they include any matching values
@@ -87,17 +92,20 @@ module.exports = (db) => {
       };
 
       //checking against our compareObj to see if the searched item matches anything we have as a SmartToDo
+      const queryMatch = function () {
+      for (let item of test) {
       for (let todos in compareObj) {
-        let match = findCommonElements(compareObj[todos], test);
-        if (match) {
-          types = todos;
-          break;
-        }
+          let match = findCommonElements(compareObj[todos], item);
+          if (match) {
+          return types = todos;
+          }
       }
-
+    }
+  }
+queryMatch();
 
       console.log(test);
-      console.log(items[0].result.description);
+      // console.log(items[0].result.description);
       //update our category in values to our found type of SmartToDo
       values[2] = types;
 
