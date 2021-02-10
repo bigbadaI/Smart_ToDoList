@@ -26,6 +26,7 @@ $(() => {
   const createTaskElement = function(tasks) {
     const title = tasks.title;
     const category = tasks.category;
+    const description = tasks.description;
     const taskid = tasks.id;
     const $task = $(`<div class="ourtasks">
       <div class="task-info">
@@ -34,7 +35,9 @@ $(() => {
           <button class="complete-btn" type="submit"><i class="far fa-check-square"></i></button>
         </form>
         <h2>${title}</h2>
-      </div>
+        </div>
+      <a href=${description}>Try This</a>
+      <div>
       <h3>...${category}</h3>
     </div>`);
 

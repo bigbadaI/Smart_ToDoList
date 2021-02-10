@@ -52,11 +52,22 @@ app.use("/api/widgets", widgetsRoutes(db));
 // Warning: avoid creating more routes in this file!
 // Separate them into separate routes files (see above).
 app.get("/", (req, res) => {
-  res.render("index");
+  let templateVars = { user: 0 };
+  if (req.session.username) {
+    templateVars.user = req.session.username;
+  }
+  res.render("index", templateVars);
 });
 
 app.get("/logout", (req, res) => {
   req.session = null;
+  return res.redirect("/");
+});
+
+app.get("/random", (req, res) => {
+  let random = Math.floor(Math.random() * 5) + 1;
+  // console.log("USER ID:", req.params); // DEBUGGER CODE
+  req.session.username = random;
   return res.redirect("/");
 });
 

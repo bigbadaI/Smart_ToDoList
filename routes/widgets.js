@@ -1,7 +1,11 @@
-
+'use strict';
 const KGSearch = require('google-kgsearch');
 const kGraph = KGSearch(process.env.APIGOOGLEKEY);
+
 const {compareObj, findCommonElements} = require('../helpers/helpers')
+
+const yelp = require('yelp-fusion');
+
 
 /*
  * All routes for Tasks are defined here
@@ -56,6 +60,9 @@ module.exports = (db) => {
     let description = 'To Read';
     let dueDate = '2021-02-24';
     let values = [userID, title, category, description, dueDate];
+    let types = 'To Ponder';
+
+
 
     //used for our kGraph search
     let params = {
@@ -69,6 +76,7 @@ module.exports = (db) => {
 
       console.log(items);
       let test = [];
+
       let types = 'To Ponder';
       for (let i = 0; i < 4; i++) {
         if(items[i]) {
@@ -89,22 +97,51 @@ module.exports = (db) => {
   }
 queryMatch();
 
+
       console.log(test);
       // console.log(items[0].result.description);
       //update our category in values to our found type of SmartToDo
       values[2] = types;
 
-      //Insert new task in the db
-      (db.query(queryString, values)
-        .then(() => {
-          // Respond with a 201 (created) status on success
-          res.status(201).send();
-        })
-        .catch(err => {
-          res
-            .status(500)
-            .json({ error: err.message });
-        }));
+      const apiKey = process.env.YELP_API_KEY;
+
+      const searchRequest = {
+        term: title,
+        location: 'Vancouver',
+        categories: 'food,shopping,restaurants,banks,bank'
+      };
+
+      const client = yelp.client(apiKey);
+      const yelpSearch = function() {
+        client.search(searchRequest).then(response => {
+          const firstResult = response.jsonBody.businesses[0];
+          const names = response.jsonBody.businesses[0].name;
+          const yelpUrl = response.jsonBody.businesses[0].url;
+          const prettyJson = JSON.stringify(firstResult, null, 4);
+          console.log(prettyJson, `\n`, names);
+          // types = response.jsonBody.businesses[0].name;
+          console.log("==== Where is this =====", names);
+          values[1] = names, values[2] = 'To Visit', values[3] = yelpUrl;
+        }).catch(e => {
+          console.log(e);
+          return false;
+        });
+      };
+      yelpSearch();
+      setTimeout(() => {
+
+        //Insert new task in the db
+        (db.query(queryString, values)
+          .then(() => {
+            // Respond with a 201 (created) status on success
+            res.status(201).send();
+          })
+          .catch(err => {
+            res
+              .status(500)
+              .json({ error: err.message });
+          }));
+      }, 1500);
     });
   });
 
@@ -127,9 +164,6 @@ queryMatch();
           .json({ error: err.message });
       });
   });
-
-
-
 
   return router;
 };
