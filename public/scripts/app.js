@@ -28,13 +28,15 @@ $(() => {
     const category = tasks.category;
     const taskid = tasks.id;
     const $task = $(`<div class="ourtasks">
-<form class="task-checkmark" method="POST" action="/api/widgets/${taskid}/complete">
-<input type="hidden" name="taskid" value=${taskid}></input>
-<button class="complete-btn" type="submit">Task Complete</button>
-</form>
-<h1>${category}</h1>
-<h3>${title}</h3>
-</div>`);
+      <div class="task-info">
+        <form class="task-checkmark" method="POST" action="/api/widgets/${taskid}/complete">
+          <input type="hidden" name="taskid" value=${taskid}></input>
+          <button class="complete-btn" type="submit"><i class="far fa-check-square"></i></button>
+        </form>
+        <h2>${title}</h2>
+      </div>
+      <h3>...${category}</h3>
+    </div>`);
 
     return $task;
   };
@@ -57,7 +59,7 @@ $(() => {
       lastName = user.last_name;
       console.log(user.last_name);
     }
-    const $user = $(`<h1><u>${firstName} ${lastName}</u></h1>`);
+    const $user = $(`<h1>${firstName} ${lastName}</h1>`);
     $('.header').prepend($user);
   };
 
@@ -85,6 +87,7 @@ $(() => {
   $(function() {
     $("#new-task-form").submit(function(event) {
       event.preventDefault();
+      $(".todo-btn").blur();
 
       // validate task is not empty
       const task = $(this).children("#new-task").val();
