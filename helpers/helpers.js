@@ -39,9 +39,25 @@ const queryMatch = function (arr, obj, val) {
 
 
 /**
- *
+ * Search Yelp for a query match.
  */
+const yelpSearch = function(yelpClient, queryParams, arr, text) {
+  yelpClient.search(queryParams).then(response => {
+    const firstResult = response.jsonBody.businesses[0];
+    let names = response.jsonBody.businesses[0].name;
+    const yelpUrl = response.jsonBody.businesses[0].url;
+    const prettyJson = JSON.stringify(firstResult, null, 4);
+
+    console.log(prettyJson, `\n`, names);
+    // types = response.jsonBody.businesses[0].name;
+    console.log("==== Where is this =====", names);
+
+    arr[1] = names + " , '" + text + "'", arr[2] = 'To Visit', arr[3] = yelpUrl;
+  }).catch(error => {
+    console.log(error);
+    return false;
+  });
+};
 
 
-
-module.exports = { findCommonElements, compareObj, queryMatch };
+module.exports = { findCommonElements, compareObj, queryMatch, yelpSearch };
