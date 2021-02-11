@@ -1,9 +1,7 @@
 'use strict';
 const KGSearch = require('google-kgsearch');
 const kGraph = KGSearch(process.env.APIGOOGLEKEY);
-
 const {compareObj, findCommonElements} = require('../helpers/helpers')
-
 const yelp = require('yelp-fusion');
 
 
@@ -60,7 +58,7 @@ module.exports = (db) => {
     let description = 'To Read';
     let dueDate = '2021-02-24';
     let values = [userID, title, category, description, dueDate];
-    let types = 'To Ponder';
+
 
 
 
@@ -107,8 +105,8 @@ queryMatch();
 
       const searchRequest = {
         term: title,
-        location: 'Vancouver',
-        categories: 'food,shopping,restaurants,banks,bank'
+        location: req.session.city,
+        // categories: 'food,shopping,restaurants,banks,bank'
       };
 
       const client = yelp.client(apiKey);
