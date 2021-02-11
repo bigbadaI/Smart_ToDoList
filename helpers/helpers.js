@@ -52,7 +52,7 @@ const yelpSearch = function(yelpClient, queryParams, arr, text) {
     // types = response.jsonBody.businesses[0].name;
     console.log("==== Where is this =====", names);
 
-    arr[1] = text + ": " + names, arr[2] = 'To Visit', arr[3] = yelpUrl;
+    arr[1] = text + ": ", arr[2] = 'To Visit', arr[3] = names, arr[5] = yelpUrl;
   }).catch(error => {
     console.log(error);
     return false;

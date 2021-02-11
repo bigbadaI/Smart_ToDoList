@@ -28,16 +28,18 @@ $(() => {
     const category = tasks.category;
     const description = tasks.description;
     const taskid = tasks.id;
+    const linkName = tasks.url;
     const $task = $(`<div class="ourtasks">
       <div class="task-info">
         <form class="task-checkmark" method="POST" action="/api/widgets/${taskid}/complete">
           <input type="hidden" name="taskid" value=${taskid}></input>
           <button class="complete-btn" type="submit"><i class="far fa-check-square"></i></button>
         </form>
-        <h2>${title}</h2>
-        </div>
+        <h2>${title}&nbsp;</h2><a href=${linkName}><h2>${description}</h2></a>
+      </div>
       <div>
-      <a href=${description}><h3>...${category}</h3></a>
+        <h3>...${category}</h3>
+      </div>
     </div>`);
 
     return $task;

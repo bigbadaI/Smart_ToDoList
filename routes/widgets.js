@@ -51,13 +51,14 @@ module.exports = (db) => {
     console.log("User:", req.session.username);
     console.log("-----------------");
 
-    let queryString = `INSERT INTO tasks (user_id, title, category, description, due_date) VALUES ( $1, $2, $3, $4, $5)`;
+    let queryString = `INSERT INTO tasks (user_id, title, category, description, due_date, url) VALUES ( $1, $2, $3, $4, $5, $6)`;
 
     let userID = req.session.username;
     let title = req.body.text;
     let description = 'To Read';
     let dueDate = '2021-02-24';
-    let values = [userID, title, 'To Ponder', description, dueDate];
+    let url = "";
+    let values = [userID, title, 'To Ponder', '', dueDate, ''];
 
 
     //used for our kGraph search
