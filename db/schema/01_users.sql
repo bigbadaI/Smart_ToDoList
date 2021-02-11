@@ -19,9 +19,10 @@ CREATE TABLE tasks (
   user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
   title VARCHAR(255) NOT NULL,
   category VARCHAR(255) NOT NULL,
-  description TEXT,
+  description TEXT DEFAULT '',
   complete BOOLEAN DEFAULT false,
-  due_date DATE
+  due_date DATE,
+  url VARCHAR(255)
 );
 
 CREATE TABLE favourites (
