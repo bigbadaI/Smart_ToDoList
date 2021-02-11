@@ -64,7 +64,7 @@ module.exports = (db) => {
     //used for our kGraph search
     let params = {
       query: title,
-      limit: 2
+      limit: 5
     };
 
     //kGraph does a google search of the title we are wanting to add to our SmartToDos
@@ -74,8 +74,9 @@ module.exports = (db) => {
       console.log(items);
       let test = [];
 
-      for (let i = 0; i <= 1; i++) {
+      for (let i = 0; i <= 4; i++) {
         if (items[i]) {
+          // console.log("/////////////LOOK", items[i].result.name);
           if (items[i].result.name === title) {
             test.push(...items[i].result['@type']);
           }
@@ -91,7 +92,7 @@ module.exports = (db) => {
         location: req.session.city,
       };
 
-      // console.log("======= HERE ========", test);
+      console.log("======= HERE ========", test, values[2]);
 
       //If google search returns aren't sufficient use the Yelp Search
       if (values[2] === 'To Ponder') {
