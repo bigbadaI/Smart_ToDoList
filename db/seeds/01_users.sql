@@ -1,5 +1,5 @@
-INSERT INTO users (first_name, last_name, username, email) VALUES ('Enola', 'Donnelly', 'Loyal_Russel77', 'Filiberto_Willms@hotmail.com');
-INSERT INTO users (first_name, last_name, username, email) VALUES ('Jay', 'Rippin', 'Dock76', 'Germaine_Boyle@hotmail.com');
-INSERT INTO users (first_name, last_name, username, email) VALUES ('Alphonso', 'Okuneva', 'Dorian.Marvin82', 'Fleta_Mayer19@yahoo.com');
-INSERT INTO users (first_name, last_name, username, email) VALUES ('Claire', 'Bernhard', 'Jackson_Crist97', 'Chad71@hotmail.com');
-INSERT INTO users (first_name, last_name, username, email) VALUES ('Cordia', 'Harris', 'Tatum.Labadie73', 'Friedrich.Ratke@hotmail.com');
+INSERT INTO users (first_name, last_name, username, email, city) VALUES ('Ansel', 'King', 'Cristal.Kuhic', 'Christiana20@hotmail.com','Edmonton');
+INSERT INTO users (first_name, last_name, username, email, city) VALUES ('Ewell', 'Jakubowski', 'Tiana67', 'Marvin74@hotmail.com','Vancouver');
+INSERT INTO users (first_name, last_name, username, email, city) VALUES ('Noble', 'Rogahn', 'Kay.Becker56', 'Ben.Mosciski77@hotmail.com','Toronto');
+INSERT INTO users (first_name, last_name, username, email, city) VALUES ('Jasmin', 'Roberts', 'Madelyn_Wiegand', 'Diana_Stokes@gmail.com','Tampa Bay');
+INSERT INTO users (first_name, last_name, username, email, city) VALUES ('Luna', 'Weber', 'Darlene_Nitzsche', 'Wilfredo_Zulauf71@hotmail.com','London');

@@ -14,6 +14,7 @@ module.exports = (db) => {
     db.query(`SELECT * FROM users
     WHERE users.id = ${currentUser};`)
       .then(data => {
+        req.session.city = data.rows[0].city;
         const users = data.rows;
         res.json({ users });
       })

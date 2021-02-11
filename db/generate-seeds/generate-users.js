@@ -5,7 +5,7 @@ const generateUsers = () => {
 
   // TABLE INFO
   const NAME = "users";
-  const ATTRIBUTES = "(first_name, last_name, username, email)";
+  const ATTRIBUTES = "(first_name, last_name, username, email, city)";
 
   let users = "";
 
@@ -15,8 +15,9 @@ const generateUsers = () => {
     let lastName = faker.name.lastName();
     let username = faker.internet.userName();
     let email = faker.internet.email();
+    let city = faker.address.city();
 
-    users += `INSERT INTO ${NAME} ${ATTRIBUTES} VALUES ('${firstName}', '${lastName}', '${username}', '${email}');`;
+    users += `INSERT INTO ${NAME} ${ATTRIBUTES} VALUES ('${firstName}', '${lastName}', '${username}', '${email}','${city}');`;
     users += "\n";
   }
 

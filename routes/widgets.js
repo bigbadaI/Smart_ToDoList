@@ -60,6 +60,7 @@ module.exports = (db) => {
     let values = [userID, title, category, description, dueDate];
 
 
+
     //used for our kGraph search
     let params = {
       query: title,
@@ -105,7 +106,9 @@ module.exports = (db) => {
       // Create values for Yelp Search API
       const searchRequest = {
         term: title,
-        location: 'Edmonton',
+        location: req.session.city,
+        // categories: 'food,shopping,restaurants,banks,bank'
+
       };
       const apiKey = process.env.YELP_API_KEY;
       const client = yelp.client(apiKey);
