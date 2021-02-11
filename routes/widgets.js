@@ -1,8 +1,8 @@
 'use strict';
 const KGSearch = require('google-kgsearch');
 const kGraph = KGSearch(process.env.APIGOOGLEKEY);
-const { compareObj, findCommonElements } = require('../helpers/helpers');
 const yelp = require('yelp-fusion');
+const { compareObj, findCommonElements, queryMatch, yelpSearch } = require('../helpers/helpers');
 
 
 /*
@@ -80,18 +80,20 @@ module.exports = (db) => {
         }
       }
 
-      //checking against our compareObj to see if the searched item matches anything we have as a SmartToDo
-      const queryMatch = function() {
-        for (let item of test) {
-          for (let todos in compareObj) {
-            let match = findCommonElements(compareObj[todos], item);
-            if (match) {
-              return types = todos;
-            }
-          }
-        }
-      };
-      queryMatch();
+      // //checking against our compareObj to see if the searched item matches anything we have as a SmartToDo
+      // const queryMatch = function() {
+      //   for (let item of test) {
+      //     for (let todos in compareObj) {
+      //       let match = findCommonElements(compareObj[todos], item);
+      //       if (match) {
+      //         return types = todos;
+      //       }
+      //     }
+      //   }
+      // };
+      // queryMatch();
+      queryMatch(test, compareObj, types);
+
 
 
       console.log(test);
@@ -99,30 +101,33 @@ module.exports = (db) => {
       //update our category in values to our found type of SmartToDo
       values[2] = types;
 
-      const apiKey = process.env.YELP_API_KEY;
 
+      // Create values for Yelp Search API
       const searchRequest = {
         term: title,
         location: 'Edmonton',
       };
-
+      const apiKey = process.env.YELP_API_KEY;
       const client = yelp.client(apiKey);
-      const yelpSearch = function() {
-        client.search(searchRequest).then(response => {
-          const firstResult = response.jsonBody.businesses[0];
-          let names = response.jsonBody.businesses[0].name;
-          const yelpUrl = response.jsonBody.businesses[0].url;
-          const prettyJson = JSON.stringify(firstResult, null, 4);
-          console.log(prettyJson, `\n`, names);
-          // types = response.jsonBody.businesses[0].name;
-          console.log("==== Where is this =====", names);
-          values[1] = names + " , '" + title + "'", values[2] = 'To Visit', values[3] = yelpUrl;
-        }).catch(e => {
-          console.log(e);
-          return false;
-        });
-      };
-      yelpSearch();
+      // const yelpSearch = function() {
+      //   client.search(searchRequest).then(response => {
+      //     const firstResult = response.jsonBody.businesses[0];
+      //     let names = response.jsonBody.businesses[0].name;
+      //     const yelpUrl = response.jsonBody.businesses[0].url;
+      //     const prettyJson = JSON.stringify(firstResult, null, 4);
+      //     console.log(prettyJson, `\n`, names);
+      //     // types = response.jsonBody.businesses[0].name;
+      //     console.log("==== Where is this =====", names);
+      //     values[1] = names + " , '" + title + "'", values[2] = 'To Visit', values[3] = yelpUrl;
+      //   }).catch(e => {
+      //     console.log(e);
+      //     return false;
+      //   });
+      // };
+      // yelpSearch();
+      yelpSearch(client, searchRequest, values, title);
+
+
       setTimeout(() => {
 
         //Insert new task in the db
