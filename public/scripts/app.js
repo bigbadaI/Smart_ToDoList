@@ -36,9 +36,8 @@ $(() => {
         </form>
         <h2>${title}</h2>
         </div>
-      <a href=${description}>Try This</a>
       <div>
-      <h3>...${category}</h3>
+      <a href=${description}><h3>...${category}</h3></a>
     </div>`);
 
     return $task;

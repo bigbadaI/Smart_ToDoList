@@ -1,9 +1,7 @@
 'use strict';
 const KGSearch = require('google-kgsearch');
 const kGraph = KGSearch(process.env.APIGOOGLEKEY);
-
-const {compareObj, findCommonElements} = require('../helpers/helpers')
-
+const { compareObj, findCommonElements } = require('../helpers/helpers');
 const yelp = require('yelp-fusion');
 
 
@@ -60,8 +58,6 @@ module.exports = (db) => {
     let description = 'To Read';
     let dueDate = '2021-02-24';
     let values = [userID, title, category, description, dueDate];
-    let types = 'To Ponder';
-
 
 
     //used for our kGraph search
@@ -79,23 +75,23 @@ module.exports = (db) => {
 
       let types = 'To Ponder';
       for (let i = 0; i < 4; i++) {
-        if(items[i]) {
+        if (items[i]) {
           test.push(...items[i].result['@type']);
         }
       }
 
       //checking against our compareObj to see if the searched item matches anything we have as a SmartToDo
-      const queryMatch = function () {
-      for (let item of test) {
-      for (let todos in compareObj) {
-          let match = findCommonElements(compareObj[todos], item);
-          if (match) {
-          return types = todos;
+      const queryMatch = function() {
+        for (let item of test) {
+          for (let todos in compareObj) {
+            let match = findCommonElements(compareObj[todos], item);
+            if (match) {
+              return types = todos;
+            }
           }
-      }
-    }
-  }
-queryMatch();
+        }
+      };
+      queryMatch();
 
 
       console.log(test);
@@ -107,21 +103,20 @@ queryMatch();
 
       const searchRequest = {
         term: title,
-        location: 'Vancouver',
-        categories: 'food,shopping,restaurants,banks,bank'
+        location: 'Edmonton',
       };
 
       const client = yelp.client(apiKey);
       const yelpSearch = function() {
         client.search(searchRequest).then(response => {
           const firstResult = response.jsonBody.businesses[0];
-          const names = response.jsonBody.businesses[0].name;
+          let names = response.jsonBody.businesses[0].name;
           const yelpUrl = response.jsonBody.businesses[0].url;
           const prettyJson = JSON.stringify(firstResult, null, 4);
           console.log(prettyJson, `\n`, names);
           // types = response.jsonBody.businesses[0].name;
           console.log("==== Where is this =====", names);
-          values[1] = names, values[2] = 'To Visit', values[3] = yelpUrl;
+          values[1] = names + " , '" + title + "'", values[2] = 'To Visit', values[3] = yelpUrl;
         }).catch(e => {
           console.log(e);
           return false;
@@ -141,7 +136,7 @@ queryMatch();
               .status(500)
               .json({ error: err.message });
           }));
-      }, 1500);
+      }, 2500);
     });
   });
 
