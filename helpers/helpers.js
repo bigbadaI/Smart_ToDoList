@@ -18,7 +18,6 @@ let compareObj = {
   'To Watch': ['Movie', 'TVSeries', 'SportsTeam', 'MovieSeries', 'Painting', 'TVEpisode'],
   'To Listen To': ['Compsition', 'MusicGroup', 'BroadcastService', 'RadioSeries', 'RadioStation', 'MusicAlbum', 'MusicRelease', 'Audiobook'],
   'To Read': ['Book', 'ComicBook', 'BookSeries', 'ComicSeries', 'Newspaper', 'NewsArticle'],
-  'To Visit': ['Place', 'Restaurant', 'TouristAttraction', 'Accommodation', 'CivicStructure', 'Landform', 'LocalBusiness', 'TouristDestination', 'LandmarksOrHistoricalBuildings'],
   'To Play': ['Game', 'VideoGame', "VideoGameSeries"]
 };
 
@@ -26,12 +25,13 @@ let compareObj = {
 /**
  * Check the categories object to find a category with a type array value that matches a type of the Google search element.
  */
-const queryMatch = function (arr, obj, val) {
+const queryMatch = function(arr, obj) {
   for (let element of arr) {
     for (let key in obj) {
       let match = findCommonElements(obj[key], element);
       if (match) {
-        return val = key;
+        console.log("+++++++ LOOK AT ME +++++++", key);
+        return key;
       }
     }
   }
@@ -52,7 +52,7 @@ const yelpSearch = function(yelpClient, queryParams, arr, text) {
     // types = response.jsonBody.businesses[0].name;
     console.log("==== Where is this =====", names);
 
-    arr[1] = names + " , '" + text + "'", arr[2] = 'To Visit', arr[3] = yelpUrl;
+    arr[1] = text + ": " + names, arr[2] = 'To Visit', arr[3] = yelpUrl;
   }).catch(error => {
     console.log(error);
     return false;
