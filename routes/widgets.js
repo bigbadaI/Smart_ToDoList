@@ -64,7 +64,7 @@ module.exports = (db) => {
     //used for our kGraph search
     let params = {
       query: title,
-      limit: 5
+      limit: 2
     };
 
     //kGraph does a google search of the title we are wanting to add to our SmartToDos
@@ -74,13 +74,13 @@ module.exports = (db) => {
       console.log(items);
       let test = [];
 
-      for (let i = 0; i <= 4; i++) {
+      for (let i = 0; i <= 1; i++) {
         if (items[i]) {
           // console.log("/////////////LOOK", items[i].result.name);
-          if (items[i].result.name === title) {
-            test.push(...items[i].result['@type']);
-            console.log("///",items[i].result['@type'],"////");
-          }
+          // if (items[i].result.name === title) {
+          test.push(...items[i].result['@type']);
+          console.log("///",items[i].result['@type'],"////");
+
         }
       }
 
