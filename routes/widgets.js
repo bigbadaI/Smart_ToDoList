@@ -79,6 +79,7 @@ module.exports = (db) => {
           // console.log("/////////////LOOK", items[i].result.name);
           if (items[i].result.name === title) {
             test.push(...items[i].result['@type']);
+            console.log("///",items[i].result['@type'],"////");
           }
         }
       }
@@ -96,13 +97,25 @@ module.exports = (db) => {
 
       //If google search returns aren't sufficient use the Yelp Search
       if (values[2] === 'To Ponder') {
-        yelpSearch(CLIENT, searchRequest, values, title);
-      }
+        // yelpSearch(CLIENT, searchRequest, values, title)
+        yelpSearch(CLIENT, searchRequest, values, title)
+          .then((response) => {
 
-      setTimeout(() => {
+            //Insert new task in the db
+            db.query(queryString, values)
+              .then(() => {
+                // Respond with a 201 (created) status on success
+                res.status(201).send();
+              })
+              .catch(err => {
+                res
+                  .status(500)
+                  .json({ error: err.message });
+              });
+          });
 
-        //Insert new task in the db
-        (db.query(queryString, values)
+      } else {
+        db.query(queryString, values)
           .then(() => {
             // Respond with a 201 (created) status on success
             res.status(201).send();
@@ -111,8 +124,8 @@ module.exports = (db) => {
             res
               .status(500)
               .json({ error: err.message });
-          }));
-      }, 2500);
+          });
+      }
     });
   });
 
