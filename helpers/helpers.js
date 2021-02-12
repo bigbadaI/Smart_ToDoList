@@ -42,7 +42,7 @@ const queryMatch = function(arr, obj) {
  * Search Yelp for a query match.
  */
 const yelpSearch = function(yelpClient, queryParams, arr, text) {
-  yelpClient.search(queryParams).then(response => {
+  return yelpClient.search(queryParams).then(response => {
     const firstResult = response.jsonBody.businesses[0];
     let names = response.jsonBody.businesses[0].name;
     const yelpUrl = response.jsonBody.businesses[0].url;
